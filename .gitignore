@@ -222,3 +222,6 @@ __marimo__/
 # Assessment data (proprietary, do not commit)
 data/
 *.zip
+
+# Candidate pack (harness + proprietary data), local only
+pack/
