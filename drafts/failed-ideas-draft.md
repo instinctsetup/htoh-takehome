@@ -10,6 +10,6 @@ AI-assisted draft (see README Provenance). Every number below was measured in th
 
 4. **Naive absolute momentum without volatility adjustment (Task 2).** Ranking by raw 126-day return loads up on the most volatile names; drawdowns deepen and momentum crashes hit harder. Dividing by 63-day vol improved Sharpe and kept the wildest names out.
 
-5. **Tranching / partial adds to reduce anchor sensitivity (Task 2).** Splitting the monthly rebalance into weekly tranches would smooth the rebalance-anchor sensitivity, but the pack rule "no adding to an already-open position" blocks true tranching. Dropped; anchor sensitivity (Sharpe ~1.7-2.1) disclosed instead.
+5. **Tranching / partial adds to reduce anchor sensitivity (Task 2).** Splitting the 30-day rebalance into weekly tranches would smooth the rebalance-anchor sensitivity, but the pack rule "no adding to an already-open position" blocks true tranching. Dropped; anchor sensitivity (Sharpe ~1.7-2.1) disclosed instead.
 
 6. **Longer momentum lookbacks only (Task 2).** 189-day lookback alone is slower to drop broken trends; combined with n=15 it does score well (2.19) but we kept the middle-of-plateau 126-day config rather than the grid max.
