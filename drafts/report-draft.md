@@ -2,17 +2,17 @@
 
 This is a draft the candidate can edit and export as the <=3-page report.pdf. It is AI-assisted (see README Provenance) - before using any of it, check the organiser's own-code and assistance rules - understanding or rewriting this material does not by itself establish permission or compliance.
 
-## Task 1 - NIFTY futures intraday strategy
+## Task 1 - NIFTY futures strategy (15-min bars, ~1-day holds)
 
-**Hypothesis.** On trend days, the opening range (first 90 minutes) often breaks in the direction of the larger daily trend; trading only with a slow trend filter and exiting by close avoids overnight gap risk and carry cost.
+**Hypothesis.** On trend days, the opening range (first 90 minutes) often breaks in the direction of the larger daily trend; trading only with a slow trend filter captures trend-day continuation; the exit is signaled at the day's last bar, so the fill lands at the next day's open - positions are held overnight by design (harness fills are next-bar-open).
 
-**Signal (3 params).** Opening-range breakout over the first 6 15-min bars; long only if the 60-trading-day close-to-close return is positive, short only if negative; no entries after 13:45; flat by the 15:15 bar. One position at a time, intraday only.
+**Signal (3 params).** Opening-range breakout over the first 6 15-min bars; long only if the 60-trading-day close-to-close return is positive, short only if negative; no entries after 13:45; exit decided at the 15:15 bar's close, filled at the next day's 09:15 open - roughly a one-day hold with overnight gap exposure, not intraday-only.
 
 **Results (pack harness, 2017-04 to 2022-01).** CAGR 20.27%, max DD -7.52%, Sharpe 1.55, 370 trades, 61.4% win rate, 17.2% time in market. Year-wise: 2017 +8.9%, 2018 +8.2%, 2019 +24.5%, 2020 +34.8%, 2021 +23.1%, Jan-22 +0.2%.
 
 **Robustness.** 2-bar fill delay: Sharpe 1.74 (delay helps - post-breakout reversal; not execution-fragile). 2x costs: Sharpe 1.07 - this is the weak point, driven by ~77 round trips/yr; documented openly. Delay + 2x costs: 1.31. Sensitivity over orb_bars {4,6,8} x trend_lookback {40,60,90}: Sharpe 1.27-1.72, a plateau, not a spike.
 
-**Limitations.** Performance depends on the cost assumption; a mean-reversion intraday regime hurts breakouts (2017 was the softest full year). No claim about the hidden Feb-2022-Oct-2026 holdout.
+**Limitations.** Overnight risk is taken, not avoided: the harness charges nightly carry ((6%-1.3%)/252) and roll costs, and much of the edge is the overnight gap - a true intraday variant (exit same day) measures Sharpe 0.63 and fails the bar. Performance also depends on the cost assumption; a mean-reversion intraday regime hurts breakouts (2017 was the softest full year). No claim about the hidden Feb-2022-Oct-2026 holdout.
 
 ## Task 2 - NSE stock portfolio
 
