@@ -6,7 +6,7 @@ AI-assisted draft (see README Provenance). Every number below was measured in th
 
 2. **Pure opening-range breakout, no trend filter (Task 1).** Intraday-only ORB alone: Sharpe 0.64-0.75, and negative (-0.2) at 2x costs. Too many false breakouts in chop. The 60-day trend filter is what carries the strategy (1.55).
 
-3. **ORB held overnight (Task 1).** An early version forgot end-of-day flattening and held breakouts overnight: Sharpe ~1.46 looked decent but violated the intended intraday-only design and exposed the book to gap risk and nightly carry. Fixed to flat-by-15:15.
+3. **True intraday-only ORB (Task 1).** The design started as intraday-only, but the harness fills at the next bar's open, so 'flat at the last bar' actually exits at the next day's open. Forcing a genuinely same-day exit (decided 15:00, filled 15:15) measures Sharpe 0.63 / CAGR 9.5% - below the Sharpe > 1.0 bar. Most of the edge is overnight continuation after a trend-aligned breakout, so the kept strategy holds overnight deliberately and pays the carry; all reported numbers include gap risk, nightly carry and roll costs.
 
 4. **Naive absolute momentum without volatility adjustment (Task 2).** Ranking by raw 126-day return loads up on the most volatile names; drawdowns deepen and momentum crashes hit harder. Dividing by 63-day vol improved Sharpe and kept the wildest names out.
 
