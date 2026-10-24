@@ -17,7 +17,7 @@ Idea (opening-range breakout with a daily trend filter, one position at a time, 
 Why it should work economically: days that break out of their opening range in the direction of the
 prevailing multi-week trend tend to keep drifting that way (short-horizon continuation of order flow);
 the trend filter keeps the strategy out of the choppy, mean-reverting regimes where breakouts fail, and
-intraday-only holding avoids paying the overnight futures carry on longs.
+positions carry overnight and include the nightly futures carry and expiry-roll costs.
 
 Look-ahead safety: every decision uses only bars that have closed by that bar; a day's close enters the
 trend filter only from 15:30 IST that day; the opening range uses only the day's first `orb_bars` bars.
