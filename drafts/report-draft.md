@@ -1,6 +1,6 @@
 # Draft: report.pdf source (Task 1 + Task 2) - for review, not submission
 
-This is a draft the candidate can edit and export as the <=3-page report.pdf. It is AI-assisted (see README Provenance) - rewrite it in your own words and make sure you can defend every line live before using it.
+This is a draft the candidate can edit and export as the <=3-page report.pdf. It is AI-assisted (see README Provenance) - before using any of it, check the organiser's own-code and assistance rules - understanding or rewriting this material does not by itself establish permission or compliance.
 
 ## Task 1 - NIFTY futures intraday strategy
 
@@ -18,13 +18,13 @@ This is a draft the candidate can edit and export as the <=3-page report.pdf. It
 
 **Hypothesis.** Cross-sectional momentum in Indian equities, risk-adjusted and liquidity-filtered, harvested monthly with low turnover.
 
-**Signal (5 params).** Every 30 days: score = 126-day return / 63-day volatility; hold the top 15 names with 60-day median traded value >= Rs 10 cr and positive score, equal weights; exit names that fall out. Max 15 names / 15% each respected; no adds to open positions; market orders only.
+**Signal (5 params).** Every 30 calendar days (checked on trading days, ~20-21 trading days apart, not month-aligned): score = 126-day return / 63-day volatility; hold the top 15 names with 60-day median traded value >= Rs 10 cr and positive score, equal weights; exit names that fall out. Max 15 names / 15% each respected; no adds to open positions; market orders only.
 
 **Results (pack harness, 2022-03-02 to 2024-06-28).** CAGR 60.91%, max DD -21.69%, Sharpe 2.065, 200 trades, 52.5% win rate, avg hold 40 days, turnover 10.8x/yr. Year-wise: 2022 +17.5%, 2023 +74.6%, 2024 +47.3%.
 
 **Robustness.** Lookback {90,126,189} x n {10,12,15}: Sharpe 1.69-2.19, plateau. Excluding 2023 entirely, remaining days still compound +73.1%. Top-10 trades = 41.8% of gross gains - no single-name luck. SPLPETRO (-49% on 2022-06-07): never held; filters exclude it, and even if held, 1/15 weight caps the damage (~-3.3% portfolio hit).
 
-**Limitations.** Sensitive to the arbitrary monthly anchor (Sharpe ~1.7-2.1 across anchors; reported value uses the natural anchor, not the max). 2023's momentum regime drives a large share of returns; a momentum crash (sharp reversal) is the main tail risk, partially mitigated by the volatility divisor. No claim about the hidden Jul-2024-Oct-2026 holdout.
+**Limitations.** Sensitive to the arbitrary 30-day rebalance anchor (Sharpe ~1.7-2.1 across anchors; reported value uses the natural anchor, not the max). 2023's momentum regime drives a large share of returns; a momentum crash (sharp reversal) is the main tail risk, partially mitigated by the volatility divisor. No claim about the hidden Jul-2024-Oct-2026 holdout.
 
 ## Survivorship / data notes
 The stock panel contains the symbols the organisers shipped; symbols that cease trading simply stop producing data and are never re-selected (positions in them can only be exited if a last price exists - the pack handles SPLPETRO-class events by data absence). No stock-level survivorship correction was applied beyond the liquidity and data-availability filters; this is a factual limitation of the provided panel.
