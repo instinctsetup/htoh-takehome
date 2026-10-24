@@ -14,7 +14,7 @@ Provenance: AI-assisted reference implementation (see README). These results des
 
 ## Task 1 - NIFTY futures intraday (15-min, 2017-04-03 to 2022-01-31)
 
-Chosen strategy: opening-range breakout (first 6 bars after 09:15), traded only in the direction of a 60-day close-to-close trend filter, entries cut off at 13:45, flat by 15:15, intraday only.
+Chosen strategy: opening-range breakout (first 6 bars after 09:15), traded only in the direction of a 60-day close-to-close trend filter, entries cut off at 13:45. Exit is decided at the 15:15 bar's close and, because the harness fills at the next bar's open, the exit fill lands at the NEXT DAY's 09:15 open: positions are held overnight, overnight gap P&L is captured, and nightly carry ((6%-1.3%)/252) plus expiry-roll costs are charged. All numbers below include those effects. (A true intraday variant - exit filled the same day - was measured and fails the bar: Sharpe 0.63; see failed_ideas.)
 
 `PARAMS = {'orb_bars': 6, 'trend_lookback': 60, 'entry_cutoff': '13:45'}` - 3 tunable params (limit is 6).
 
@@ -28,7 +28,7 @@ Final file results (harness CLI):
 | Calmar | 2.69 |
 | trades | 370 (~77/yr) |
 | win rate | 61.35% |
-| time in market | 17.24% |
+| time in market | 17.24% (bar-level; overnight gaps are additional exposure between sessions) |
 
 Year-wise: 2017 +8.85%, 2018 +8.18%, 2019 +24.52%, 2020 +34.82%, 2021 +23.13%, Jan-2022 +0.18%.
 
