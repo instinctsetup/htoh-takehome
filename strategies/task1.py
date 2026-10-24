@@ -5,14 +5,14 @@ REFERENCE IMPLEMENTATION - AI-assisted, for private review and learning. See REA
 Not represented as the candidate's own unaided work; the assignment requires "the signal logic must be
 your own code" and includes a live walkthrough.
 
-Idea (opening-range breakout with a daily trend filter, intraday only):
+Idea (opening-range breakout with a daily trend filter, one position at a time, held from an intraday entry to the next morning's open):
   - The first `orb_bars` 15-minute bars of each day define the day's opening range (high/low).
   - After that, a close above the opening-range high triggers a long; a close below the low triggers a short.
     Once triggered, the position is held for the rest of the day (no flip-back).
   - Direction must agree with the daily trend: longs only when the trailing `trend_lookback`-day return of
     the index is positive, shorts only when it is negative (time-series momentum regime filter).
   - No new entries at or after `entry_cutoff`; the position is closed at the end of the day
-    (flat decided at the 15:15 bar's close, so the fill lands at the next day's open).
+    (flat decided at the 15:15 bar's close, so the exit fills at the NEXT DAY's 09:15 open: positions are held overnight; the overnight gap and the nightly carry are taken and are included in all reported numbers).
 
 Why it should work economically: days that break out of their opening range in the direction of the
 prevailing multi-week trend tend to keep drifting that way (short-horizon continuation of order flow);
@@ -69,7 +69,7 @@ def positions(bars: pd.DataFrame, params: dict) -> pd.Series:
     raw[bars.index.time >= cutoff] = np.nan                    # no new entries late in the day
     sig = raw.groupby(day_arr).ffill().fillna(0.0)             # hold the day's first trigger
     sig[bar_num.values < k] = 0.0
-    sig[is_last_regular] = 0.0                          # flat into the next day
+    sig[is_last_regular] = 0.0                          # flat decided at the last bar's close -> exit fills next day's open
 
     # --- direction must agree with the daily trend ---
     out = np.where(np.sign(sig.values) == np.sign(trend_bars.values), sig.values, 0.0)
