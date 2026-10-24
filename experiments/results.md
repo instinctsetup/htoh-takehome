@@ -10,7 +10,7 @@ Provenance: AI-assisted reference implementation (see README). These results des
 - All results are IN-SAMPLE, measured on the pack's public training data, and the parameters were TUNED ON THAT SAME DATA. That is data snooping / selection bias by construction: I tried multiple signal families and parameter grids and kept what scored well. Out-of-sample performance will be worse; the honest expectation is degradation, not repetition.
 - The pack's hidden holdouts (Task 1: Feb 2022 - Oct 2026; Task 2: Jul 2024 - Oct 2026) are the only independent test, and no claim is made or implied about them. Nothing here is a guarantee, projection, or promise of future returns.
 - Sharpe figures are the harness's own: Task 1 annualizes 15-minute bar returns in excess of a 6% risk-free rate; Task 2 annualizes daily portfolio returns with rf = 0. CAGR/annualization assume the sample period's compounding continues, which it may not.
-- The parameter sensitivity tables exist to show the chosen config is not a lone spike; they also reveal how much the score depends on arbitrary choices (e.g. the Task 2 monthly anchor spread of roughly 1.70-2.09).
+- The parameter sensitivity tables exist to show the chosen config is not a lone spike; they also reveal how much the score depends on arbitrary choices (e.g. the Task 2 rebalance anchor spread of roughly 1.70-2.09).
 
 ## Task 1 - NIFTY futures intraday (15-min, 2017-04-03 to 2022-01-31)
 
@@ -57,7 +57,7 @@ Broad plateau, no cliff around the chosen (6, 60). k=8/lb=60 scores 1.72; we kee
 
 ## Task 2 - NSE stock portfolio (daily, evaluation 2022-03-02 to 2024-06-28)
 
-Chosen strategy: monthly (30-day) rebalance into the top 15 liquid names by risk-adjusted momentum: 126-day total return / 63-day return volatility, equal weights, liquidity floor of Rs 10 crore 60-day median traded value, only positive-momentum names held.
+Chosen strategy: 30-calendar-day rebalance (checked on trading days, ~20-21 trading days apart, not month-aligned) into the top 15 liquid names by risk-adjusted momentum: 126-day total return / 63-day return volatility, equal weights, liquidity floor of Rs 10 crore 60-day median traded value, only positive-momentum names held.
 
 `PARAMS = {'lookback': 126, 'n_stocks': 15, 'vol_lookback': 63, 'rebalance_days': 30, 'min_turnover': 1e8}` - 5 params.
 
@@ -92,7 +92,7 @@ Parameter sensitivity (Sharpe, lookback x n_stocks):
 | 126 | 1.99 | 1.95 | **2.06** |
 | 189 | 1.83 | 2.08 | 2.19 |
 
-Honest caveat measured earlier: results move with the arbitrary rebalance anchor date (Sharpe range roughly 1.70-2.09 across month anchors). 2.065 is the natural anchor (rebalance on first available day then every 30 days), not the max of that spread. The monthly anchor sensitivity is a real property of monthly momentum and is disclosed here rather than hidden.
+Honest caveat measured earlier: results move with the arbitrary rebalance anchor date (Sharpe range roughly 1.70-2.09 across month anchors). 2.065 is the natural anchor (rebalance on first available day then every 30 days), not the max of that spread. The rebalance anchor sensitivity is a real property of monthly momentum and is disclosed here rather than hidden.
 
 ## Runtime
 Both backtests complete in seconds (Task 1 ~0.4s, Task 2 ~2s) - far under the 10-minute limit.
